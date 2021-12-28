@@ -1,0 +1,44 @@
+<script>
+var actx = new AudioContext();
+var osc = actx.createOscillator();
+osc.start();
+
+window.addEventListener('keypress', function(e) {
+	var tecla = e.key;
+	console.log(tecla);
+	switch (tecla) {
+		case 'a': play(261.6); break;
+		case 's': play(293.7); break;
+		case 'd': play(329.6); break;
+		case 'f': play(349.2); break;
+		case 'g': play(392.0); break;
+		case 'h': play(440.0); break;
+		case 'j': play(493.9); break;
+		case 'k': play(523.3); break;
+	}
+}, false);
+
+window.addEventListener('keyup', function(e) {
+	var tecla = e.key;
+	switch (tecla) {
+		case 'a': stop(); break;
+		case 's': stop(); break;
+		case 'd': stop(); break;
+		case 'f': stop(); break;
+		case 'g': stop(); break;
+		case 'h': stop(); break;
+		case 'j': stop(); break;
+		case 'k': stop(); break;
+	}
+}, false);
+
+function play(nota) {
+	actx.resume();
+	osc.frequency.value = nota;
+	osc.connect(actx.destination);
+}
+
+function stop() {
+	osc.disconnect();
+}
+</script>
