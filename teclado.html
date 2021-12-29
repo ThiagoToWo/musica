@@ -1,44 +1,71 @@
 <script>
-var actx = new AudioContext();
-var osc = actx.createOscillator();
-osc.start();
+var actx = new AudioContext(); // contexto de audio
 
-window.addEventListener('keypress', function(e) {
+// nome das notas, suas frequências, teclas, osciladores e ganho
+var notas = [
+			{nome:'C4', valor: 261.6, key: 'a', oscilador: actx.createOscillator(), ganho: actx.createGain()},
+			{nome:'C4#', valor: 277.2, key: 'w',  oscilador: actx.createOscillator(), ganho: actx.createGain()},
+			{nome:'D4', valor: 293.7, key: 's',  oscilador: actx.createOscillator(), ganho: actx.createGain()},
+			{nome:'D4#', valor: 311.1, key: 'e',  oscilador: actx.createOscillator(), ganho: actx.createGain()},
+			{nome:'E', valor: 329.6, key: 'd',  oscilador: actx.createOscillator(), ganho: actx.createGain()},
+			{nome:'F4', valor: 349.2, key: 'f',  oscilador: actx.createOscillator(), ganho: actx.createGain()},
+			{nome:'F4#', valor: 370.0, key: 't',  oscilador: actx.createOscillator(), ganho: actx.createGain()},
+			{nome:'G4', valor: 392.0, key: 'g',  oscilador: actx.createOscillator(), ganho: actx.createGain()},
+			{nome:'G4#', valor: 415.3, key: 'y',  oscilador: actx.createOscillator(), ganho: actx.createGain()},
+			{nome:'A4', valor: 440.0, key: 'h',  oscilador: actx.createOscillator(), ganho: actx.createGain()},
+			{nome:'A4#', valor: 466.2, key: 'u',  oscilador: actx.createOscillator(), ganho: actx.createGain()},
+			{nome:'B4', valor: 493.9, key: 'j',  oscilador: actx.createOscillator(), ganho: actx.createGain()}
+			];
+			
+for (var i = 0; i < notas.length; i++) { // configura cada oscilador pertencente a cada nota
+	notas[i].oscilador.type = 'sawtooth';
+	notas[i].oscilador.frequency.value = notas[i].valor;
+	notas[i].oscilador.start(0);
+}
+
+window.addEventListener('keydown', function(e) {
 	var tecla = e.key;
-	console.log(tecla);
 	switch (tecla) {
-		case 'a': play(261.6); break;
-		case 's': play(293.7); break;
-		case 'd': play(329.6); break;
-		case 'f': play(349.2); break;
-		case 'g': play(392.0); break;
-		case 'h': play(440.0); break;
-		case 'j': play(493.9); break;
-		case 'k': play(523.3); break;
+		case 'a': play(notas[0]); console.log(notas[0].nome); break;
+		case 'w': play(notas[1]); console.log(notas[1].nome); break;
+		case 's': play(notas[2]); console.log(notas[2].nome); break;
+		case 'e': play(notas[3]); console.log(notas[3].nome); break;
+		case 'd': play(notas[4]); console.log(notas[4].nome); break;
+		case 'f': play(notas[5]); console.log(notas[5].nome); break;		
+		case 't': play(notas[6]); console.log(notas[6].nome); break;
+		case 'g': play(notas[7]); console.log(notas[7].nome); break;
+		case 'y': play(notas[8]); console.log(notas[8].nome); break;
+		case 'h': play(notas[9]); console.log(notas[9].nome); break;
+		case 'u': play(notas[10]); console.log(notas[10].nome); break;
+		case 'j': play(notas[11]); console.log(notas[11].nome); break;
 	}
 }, false);
 
 window.addEventListener('keyup', function(e) {
 	var tecla = e.key;
 	switch (tecla) {
-		case 'a': stop(); break;
-		case 's': stop(); break;
-		case 'd': stop(); break;
-		case 'f': stop(); break;
-		case 'g': stop(); break;
-		case 'h': stop(); break;
-		case 'j': stop(); break;
-		case 'k': stop(); break;
+		case 'a': stop(notas[0]); break;
+		case 'w': stop(notas[1]); break;
+		case 's': stop(notas[2]); break;
+		case 'e': stop(notas[3]); break;
+		case 'd': stop(notas[4]); break;
+		case 'f': stop(notas[5]); break;		
+		case 't': stop(notas[6]); break;
+		case 'g': stop(notas[7]); break;
+		case 'y': stop(notas[8]); break;
+		case 'h': stop(notas[9]); break;
+		case 'u': stop(notas[10]); break;
+		case 'j': stop(notas[11]); break;
 	}
 }, false);
 
 function play(nota) {
 	actx.resume();
-	osc.frequency.value = nota;
-	osc.connect(actx.destination);
+	nota.oscilador.connect(nota.ganho);
+	nota.ganho.connect(actx.destination);
 }
 
-function stop() {
-	osc.disconnect();
+function stop(nota) {
+	nota.oscilador.disconnect();
 }
 </script>
